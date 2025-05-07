@@ -1,10 +1,7 @@
 package com.namhkn.userservice.controller;
 
-import com.namhkn.userservice.dto.UserDTO;
-import com.namhkn.userservice.model.User;
+import com.namhkn.userservice.model.UserInfo;
 import com.namhkn.userservice.service.UserService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,8 +27,8 @@ public class FileSendingController {
     @GetMapping
     public ResponseEntity<?> getUserImage(@PathVariable("id") String id) {
         try {
-            User user = userService.getUser(id);
-            String imgPathStr = user.getImgPath();
+            UserInfo userInfo = userService.getUser(id);
+            String imgPathStr = userInfo.getImgPath();
             Path imgPath = Path.of(uploadDir + "\\" + imgPathStr);
             String contentType = Files.probeContentType(imgPath);
             byte[] imgBytes = Files.readAllBytes(imgPath);

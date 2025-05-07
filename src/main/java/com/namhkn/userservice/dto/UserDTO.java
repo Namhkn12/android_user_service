@@ -1,8 +1,11 @@
 package com.namhkn.userservice.dto;
 
+import com.namhkn.userservice.model.UserAddress;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -10,6 +13,6 @@ import lombok.Setter;
 public class UserDTO {
     private int id;
     private String displayName;
-    private String address;
+    private List<UserAddress> addressList;
     private String phoneNumber;
 }

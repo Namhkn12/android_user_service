@@ -1,11 +1,9 @@
 package com.namhkn.userservice.repository;
 
-import com.namhkn.userservice.model.User;
+import com.namhkn.userservice.model.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
-
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<UserInfo, Integer> {
 }

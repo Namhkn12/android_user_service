@@ -10,18 +10,21 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "user_credential")
-@AllArgsConstructor
 @NoArgsConstructor
-public class UserCredential {
+@AllArgsConstructor
+@Table(name = "user_address")
+public class UserAddress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne
+    private String name;
+    private String city;
+    private String road;
+    private String phoneNumber;
+
+    @ManyToOne
     @JoinColumn(name = "user_info_id")
     @JsonIgnore
     private UserInfo userInfo;
-    private String username;
-    private String password;
 }

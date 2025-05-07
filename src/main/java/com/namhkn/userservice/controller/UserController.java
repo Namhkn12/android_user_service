@@ -1,18 +1,15 @@
 package com.namhkn.userservice.controller;
 
-import com.namhkn.userservice.dto.UserDTO;
-import com.namhkn.userservice.model.User;
+import com.namhkn.userservice.dto.*;
+import com.namhkn.userservice.model.UserInfo;
 import com.namhkn.userservice.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/users/{id}")
+@RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
 
@@ -21,15 +18,44 @@ public class UserController {
      * @param id id of the user (int for now)
      * @return user info, image not included
      */
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<?> getUser(@PathVariable("id") String id) {
         try {
-            User user = userService.getUser(id);
-            UserDTO userDTO = new UserDTO(user.getId(), user.getDisplayName(), user.getAddress(), user.getPhoneNumber());
+            UserInfo userInfo = userService.getUser(id);
+            UserDTO userDTO = new UserDTO(userInfo.getId(), userInfo.getDisplayName(), userInfo.getAddressList(), userInfo.getPhoneNumber());
             return ResponseEntity.ok(userDTO);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Error getting user:" + e.getMessage());
         }
     }
 
+    @PutMapping("/{id}/update/name")
+    public ResponseEntity<?> updateName(@PathVariable("id") int id, @RequestBody UpdateNameRequest request) {
+        userService.updateName(id, request.getDisplayName());
+        return ResponseEntity.ok("Name updated successfully.");
+    }
+
+    @PutMapping("/{id}/update/gender")
+    public ResponseEntity<?> updateGender(@PathVariable("id") int id, @RequestBody UpdateGenderRequest request) {
+        userService.updateGender(id, request.getGender());
+        return ResponseEntity.ok("Gender updated successfully.");
+    }
+
+    @PutMapping("/{id}/update/dob")
+    public ResponseEntity<?> updateDOB(@PathVariable("id") int id, @RequestBody UpdateDOBRequest request) {
+        userService.updateDOB(id, request.getDateOfBirth());
+        return ResponseEntity.ok("Date of Birth updated successfully.");
+    }
+
+    @PutMapping("/{id}/update/phone")
+    public ResponseEntity<?> updatePhone(@PathVariable("id") int id, @RequestBody UpdatePhoneRequest request) {
+        userService.updatePhoneNumber(id, request.getPhoneNumber());
+        return ResponseEntity.ok("Phone number updated successfully.");
+    }
+
+    @PutMapping("/{id}/update/addresses")
+    public ResponseEntity<?> updateAddresses(@PathVariable("id") int id, @RequestBody UpdateAddressesRequest request) {
+        userService.updateAddresses(id, request.getAddresses());
+        return ResponseEntity.ok("Addresses updated successfully.");
+    }
 }
