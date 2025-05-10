@@ -19,13 +19,13 @@ public class UserController {
      * @return user info, image not included
      */
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUser(@PathVariable("id") String id) {
+    public ResponseEntity<UserDTO> getUser(@PathVariable("id") String id) {
         try {
             UserInfo userInfo = userService.getUser(id);
-            UserDTO userDTO = new UserDTO(userInfo.getId(), userInfo.getDisplayName(), userInfo.getAddressList(), userInfo.getPhoneNumber());
+            UserDTO userDTO = new UserDTO(userInfo.getId(), userInfo.getDisplayName(), userInfo.getAddressList(), userInfo.getPhoneNumber(), userInfo.getGender(), userInfo.getDateOfBirth());
             return ResponseEntity.ok(userDTO);
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Error getting user:" + e.getMessage());
+            return ResponseEntity.internalServerError().body(null);
         }
     }
 

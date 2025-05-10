@@ -1,7 +1,11 @@
 package com.namhkn.userservice.service;
 
 import com.namhkn.userservice.dto.LoginRequest;
+import com.namhkn.userservice.dto.UserDTO;
+import com.namhkn.userservice.model.UserCredential;
+import com.namhkn.userservice.model.UserInfo;
 import com.namhkn.userservice.repository.UserCredentialRepository;
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +14,12 @@ import org.springframework.stereotype.Service;
 public class LoginService {
     private final UserCredentialRepository repository;
 
-    public boolean login(LoginRequest request) {
-        return repository.findByUsername(request.getUsername())
-                .map(cred -> cred.getPassword().equals(request.getPassword()))
-                .orElse(false);
+    public @Nullable UserDTO login(LoginRequest request) {
+        UserCredential credential = repository.findByUsername(request.getUsername()).orElseThrow();
+        if (request.getPassword().equals(credential.getPassword())) {
+            UserInfo info = credential.getUserInfo();
+            return new UserDTO(credential.getId(), info.getDisplayName(), info.getAddressList(), info.getPhoneNumber(), info.getGender(), info.getDateOfBirth());
+        }
+        return null;
     }
 }

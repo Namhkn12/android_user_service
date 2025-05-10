@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -15,4 +16,6 @@ public class UserDTO {
     private String displayName;
     private List<UserAddress> addressList;
     private String phoneNumber;
+    private String gender;
+    private LocalDate dateOfBirth;
 }
