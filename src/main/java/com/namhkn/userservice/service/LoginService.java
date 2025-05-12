@@ -7,6 +7,7 @@ import com.namhkn.userservice.dto.UserDTO;
 import com.namhkn.userservice.model.UserCredential;
 import com.namhkn.userservice.model.UserInfo;
 import com.namhkn.userservice.repository.UserCredentialRepository;
+import com.namhkn.userservice.repository.UserRepository;
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class LoginService {
     private final UserCredentialRepository repository;
+    private final UserRepository userRepository;
 
     public @Nullable UserDTO login(LoginRequest request) {
         UserCredential credential = repository.findByUsername(request.getUsername()).orElseThrow();
@@ -35,6 +37,7 @@ public class LoginService {
         UserCredential userCredential = new UserCredential();
         UserInfo userInfo = new UserInfo();
         userInfo.setDisplayName("New User");
+        userRepository.save(userInfo);
         userCredential.setUsername(request.getUsername());
         userCredential.setPassword(request.getPassword());
         userCredential.setUserInfo(userInfo);
