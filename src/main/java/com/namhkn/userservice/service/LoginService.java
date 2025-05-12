@@ -24,7 +24,7 @@ public class LoginService {
         UserCredential credential = repository.findByUsername(request.getUsername()).orElseThrow();
         if (request.getPassword().equals(credential.getPassword())) {
             UserInfo info = credential.getUserInfo();
-            return new UserDTO(credential.getId(), info.getDisplayName(), info.getAddressList(), info.getPhoneNumber(), info.getGender(), info.getDateOfBirth());
+            return new UserDTO(info.getId(), info.getDisplayName(), info.getAddressList(), info.getPhoneNumber(), info.getGender(), info.getDateOfBirth());
         }
         return null;
     }

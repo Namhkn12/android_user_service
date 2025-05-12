@@ -32,42 +32,42 @@ public class UserController {
     @PutMapping("/{id}/update/name")
     public ResponseEntity<?> updateName(@PathVariable("id") int id, @RequestBody UpdateNameRequest request) {
         userService.updateName(id, request.getDisplayName());
-        return ResponseEntity.ok("Name updated successfully.");
+        return ResponseEntity.ok(request);
     }
 
     @PutMapping("/{id}/update/gender")
     public ResponseEntity<?> updateGender(@PathVariable("id") int id, @RequestBody UpdateGenderRequest request) {
         userService.updateGender(id, request.getGender());
-        return ResponseEntity.ok("Gender updated successfully.");
+        return ResponseEntity.ok(request);
     }
 
     @PutMapping("/{id}/update/dob")
     public ResponseEntity<?> updateDOB(@PathVariable("id") int id, @RequestBody UpdateDOBRequest request) {
         userService.updateDOB(id, request.getDateOfBirth());
-        return ResponseEntity.ok("Date of Birth updated successfully.");
+        return ResponseEntity.ok(request);
     }
 
     @PutMapping("/{id}/update/phone")
     public ResponseEntity<?> updatePhone(@PathVariable("id") int id, @RequestBody UpdatePhoneRequest request) {
         userService.updatePhoneNumber(id, request.getPhoneNumber());
-        return ResponseEntity.ok("Phone number updated successfully.");
+        return ResponseEntity.ok(request);
     }
 
     @PutMapping("/{id}/update/addresses")
     public ResponseEntity<?> updateAddresses(@PathVariable("id") int id, @RequestBody UpdateAddressesRequest request) {
         userService.updateAddresses(id, request.getAddresses());
-        return ResponseEntity.ok("Addresses updated successfully.");
+        return ResponseEntity.ok(request);
     }
 
     @PutMapping("/{id}/update/address")
     public ResponseEntity<?> updateAddress(@PathVariable("id") int id, @RequestBody UserAddressDTO request) {
         userService.updateAddress(id, request);
-        return ResponseEntity.ok("Address id "+ id +" updated successfully.");
+        return ResponseEntity.ok(request);
     }
 
     @PutMapping("/{id}/update/password")
     public ResponseEntity<?> updatePassword(@PathVariable("id") int id, @RequestBody UpdatePasswordRequest request) {
         userService.updatePassword(id, request);
-        return ResponseEntity.ok("Password for user id "+ id +" updated successfully.");
+        return ResponseEntity.ok(request);
     }
 }
