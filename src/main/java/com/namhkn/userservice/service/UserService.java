@@ -1,19 +1,28 @@
 package com.namhkn.userservice.service;
 
+import com.namhkn.userservice.UserserviceApplication;
+import com.namhkn.userservice.dto.RegisterRequest;
+import com.namhkn.userservice.dto.UpdatePasswordRequest;
 import com.namhkn.userservice.dto.UserAddressDTO;
 import com.namhkn.userservice.model.UserAddress;
+import com.namhkn.userservice.model.UserCredential;
 import com.namhkn.userservice.model.UserInfo;
+import com.namhkn.userservice.repository.UserAddressRepository;
+import com.namhkn.userservice.repository.UserCredentialRepository;
 import com.namhkn.userservice.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final UserAddressRepository addressRepository;
+    private final UserCredentialRepository credentialRepository;
 
     public UserInfo getUser(String id) {
         return userRepository.findById(Integer.valueOf(id)).orElseThrow();
@@ -49,6 +58,7 @@ public class UserService {
         user.getAddressList().clear();
         for (UserAddressDTO dto : addressDTOs) {
             UserAddress address = new UserAddress();
+            address.setName(dto.getName());
             address.setCity(dto.getCity());
             address.setRoad(dto.getRoad());
             address.setPhoneNumber(dto.getPhoneNumber());
@@ -56,6 +66,28 @@ public class UserService {
             user.getAddressList().add(address);
         }
         userRepository.save(user);
+    }
+
+    public void updateAddress(int addressId, UserAddressDTO addressDTO) {
+        UserAddress userAddress = addressRepository.findById(addressId).orElseThrow();
+        userAddress.setName(addressDTO.getName());
+        userAddress.setCity(addressDTO.getCity());
+        userAddress.setRoad(addressDTO.getRoad());
+        userAddress.setPhoneNumber(addressDTO.getPhoneNumber());
+
+        addressRepository.save(userAddress);
+    }
+
+    public void updatePassword(int userId, UpdatePasswordRequest request) {
+        List<UserCredential> credentials = credentialRepository.findAll();
+        for (UserCredential credential : credentials) {
+            if (credential.getUserInfo().getId() == userId) {
+                if (credential.getPassword().equals(request.getCurrentPassword())) {
+                    credential.setPassword(request.getNewPassword());
+                    credentialRepository.save(credential);
+                }
+            }
+        }
     }
 
 }

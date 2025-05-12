@@ -1,6 +1,8 @@
 package com.namhkn.userservice.service;
 
+import com.namhkn.userservice.UserserviceApplication;
 import com.namhkn.userservice.dto.LoginRequest;
+import com.namhkn.userservice.dto.RegisterRequest;
 import com.namhkn.userservice.dto.UserDTO;
 import com.namhkn.userservice.model.UserCredential;
 import com.namhkn.userservice.model.UserInfo;
@@ -8,6 +10,8 @@ import com.namhkn.userservice.repository.UserCredentialRepository;
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -21,5 +25,14 @@ public class LoginService {
             return new UserDTO(credential.getId(), info.getDisplayName(), info.getAddressList(), info.getPhoneNumber(), info.getGender(), info.getDateOfBirth());
         }
         return null;
+    }
+
+    public boolean registerUser(RegisterRequest request) {
+        Optional<UserCredential> optional = repository.findByUsername(request.getUsername());
+        if (optional.isPresent()) { //Username already exist
+            return false;
+        }
+        repository.save(new UserCredential(0, new UserInfo(), request.getUsername(), request.getPassword()));
+        return true;
     }
 }

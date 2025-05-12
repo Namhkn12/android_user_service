@@ -58,4 +58,16 @@ public class UserController {
         userService.updateAddresses(id, request.getAddresses());
         return ResponseEntity.ok("Addresses updated successfully.");
     }
+
+    @PutMapping("/{id}/update/address")
+    public ResponseEntity<?> updateAddress(@PathVariable("id") int id, @RequestBody UserAddressDTO request) {
+        userService.updateAddress(id, request);
+        return ResponseEntity.ok("Address id "+ id +" updated successfully.");
+    }
+
+    @PutMapping("/{id}/update/password")
+    public ResponseEntity<?> updatePassword(@PathVariable("id") int id, @RequestBody UpdatePasswordRequest request) {
+        userService.updatePassword(id, request);
+        return ResponseEntity.ok("Password for user id "+ id +" updated successfully.");
+    }
 }
