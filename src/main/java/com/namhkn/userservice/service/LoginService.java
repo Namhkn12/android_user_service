@@ -32,7 +32,13 @@ public class LoginService {
         if (optional.isPresent()) { //Username already exist
             return false;
         }
-        repository.save(new UserCredential(0, new UserInfo(), request.getUsername(), request.getPassword()));
+        UserCredential userCredential = new UserCredential();
+        UserInfo userInfo = new UserInfo();
+        userInfo.setDisplayName("New User");
+        userCredential.setUsername(request.getUsername());
+        userCredential.setPassword(request.getPassword());
+        userCredential.setUserInfo(userInfo);
+        repository.save(userCredential);
         return true;
     }
 }
