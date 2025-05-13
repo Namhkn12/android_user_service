@@ -37,6 +37,7 @@ public class LoginService {
         UserCredential userCredential = new UserCredential();
         UserInfo userInfo = new UserInfo();
         userInfo.setDisplayName("New User");
+        userInfo.setImgPath("default.jpg");
         userRepository.save(userInfo);
         userCredential.setUsername(request.getUsername());
         userCredential.setPassword(request.getPassword());

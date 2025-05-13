@@ -1,11 +1,14 @@
 package com.namhkn.userservice.controller;
 
 import com.namhkn.userservice.dto.*;
+import com.namhkn.userservice.model.UserAddress;
 import com.namhkn.userservice.model.UserInfo;
 import com.namhkn.userservice.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -27,6 +30,11 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(null);
         }
+    }
+
+    @GetMapping("/{id}/address")
+    public List<UserAddress> getAddressesOfUser(@PathVariable("id") int userId) {
+        return userService.getAddressesOfUser(userId);
     }
 
     @PutMapping("/{id}/update/name")
@@ -61,8 +69,18 @@ public class UserController {
 
     @PutMapping("/{id}/update/address")
     public ResponseEntity<?> updateAddress(@PathVariable("id") int id, @RequestBody UserAddressDTO request) {
-        userService.updateAddress(id, request);
+        userService.updateAddressById(id, request);
         return ResponseEntity.ok("Address id "+ id +" updated successfully.");
+    }
+
+    @PostMapping("/{id}/add/address")
+    public void addAddress(@PathVariable("id") int userId, @RequestBody UserAddressDTO addressDTO) {
+        userService.addAddress(userId, addressDTO);
+    }
+
+    @PutMapping("remove/address/{id}")
+    public void removeAddress(@PathVariable("id") int addressId) {
+        userService.removeAddress(addressId);
     }
 
     @PutMapping("/{id}/update/password")

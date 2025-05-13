@@ -1,7 +1,5 @@
 package com.namhkn.userservice.service;
 
-import com.namhkn.userservice.UserserviceApplication;
-import com.namhkn.userservice.dto.RegisterRequest;
 import com.namhkn.userservice.dto.UpdatePasswordRequest;
 import com.namhkn.userservice.dto.UserAddressDTO;
 import com.namhkn.userservice.model.UserAddress;
@@ -15,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -26,6 +23,10 @@ public class UserService {
 
     public UserInfo getUser(String id) {
         return userRepository.findById(Integer.valueOf(id)).orElseThrow();
+    }
+
+    public List<UserAddress> getAddressesOfUser(int userId) {
+        return userRepository.findById(userId).orElseThrow().getAddressList();
     }
 
     public void updateName(int userId, String newName) {
@@ -68,7 +69,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void updateAddress(int addressId, UserAddressDTO addressDTO) {
+    public void updateAddressById(int addressId, UserAddressDTO addressDTO) {
         UserAddress userAddress = addressRepository.findById(addressId).orElseThrow();
         userAddress.setName(addressDTO.getName());
         userAddress.setCity(addressDTO.getCity());
@@ -76,6 +77,22 @@ public class UserService {
         userAddress.setPhoneNumber(addressDTO.getPhoneNumber());
 
         addressRepository.save(userAddress);
+    }
+
+    public void addAddress(int userId, UserAddressDTO addressDTO) {
+        UserInfo userInfo = userRepository.findById(userId).orElseThrow();
+        UserAddress userAddress = new UserAddress();
+        userAddress.setName(addressDTO.getName());
+        userAddress.setRoad(addressDTO.getRoad());
+        userAddress.setCity(addressDTO.getCity());
+        userAddress.setPhoneNumber(addressDTO.getPhoneNumber());
+        userAddress.setUserInfo(userInfo);
+        addressRepository.save(userAddress);
+    }
+
+    public void removeAddress(int addressId) {
+        UserAddress userAddress = addressRepository.findById(addressId).orElseThrow();
+        addressRepository.delete(userAddress);
     }
 
     public void updatePassword(int userId, UpdatePasswordRequest request) {
