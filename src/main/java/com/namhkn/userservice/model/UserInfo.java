@@ -26,6 +26,8 @@ public class UserInfo {
     private String gender;
     private LocalDate dateOfBirth;
 
+    private String email;
+
     @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserAddress> addressList;
 }

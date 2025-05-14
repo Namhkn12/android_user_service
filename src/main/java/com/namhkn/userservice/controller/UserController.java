@@ -5,6 +5,7 @@ import com.namhkn.userservice.model.UserAddress;
 import com.namhkn.userservice.model.UserInfo;
 import com.namhkn.userservice.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -78,14 +79,36 @@ public class UserController {
         userService.addAddress(userId, addressDTO);
     }
 
-    @PutMapping("remove/address/{id}")
+    @PutMapping("/remove/address/{id}")
     public void removeAddress(@PathVariable("id") int addressId) {
         userService.removeAddress(addressId);
     }
 
-    @PutMapping("/{id}/update/password")
-    public ResponseEntity<?> updatePassword(@PathVariable("id") int id, @RequestBody UpdatePasswordRequest request) {
-        userService.updatePassword(id, request);
-        return ResponseEntity.ok("Password for user id "+ id +" updated successfully.");
+    @PutMapping("/update/email")
+    public ResponseEntity<?> updateEmail(@RequestBody UpdateEmailRequest request) {
+        boolean res = userService.updateEmail(request);
+        if (res) return ResponseEntity.ok(true);
+        return ResponseEntity.status(HttpStatusCode.valueOf(401)).body(false);
+    }
+
+    @PutMapping("/update/password")
+    public ResponseEntity<?> updatePassword(@RequestBody UpdatePasswordRequest request) {
+        boolean res = userService.updatePassword(request);
+        if (res) return ResponseEntity.ok(true);
+        return ResponseEntity.status(HttpStatusCode.valueOf(401)).body(false);
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> requestPasswordChange(@RequestBody ChangePasswordRequest request) {
+        boolean res = userService.requestChangePassword(request);
+        if (res) return ResponseEntity.ok(true);
+        return ResponseEntity.status(HttpStatusCode.valueOf(401)).body(false);
+    }
+
+    @PostMapping("/confirm-email")
+    public ResponseEntity<?> confirmEmail(@RequestBody ConfirmEmailRequest request) {
+        boolean res = userService.requestConfirmEmail(request);
+        if (res) return ResponseEntity.ok(true);
+        return ResponseEntity.status(HttpStatusCode.valueOf(401)).body(false);
     }
 }

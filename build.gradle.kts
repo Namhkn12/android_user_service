@@ -21,6 +21,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
+	implementation("org.springframework.boot:spring-boot-starter-mail:3.4.5")
+
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
 	implementation("org.springframework.boot:spring-boot-starter-web:3.4.4")
 

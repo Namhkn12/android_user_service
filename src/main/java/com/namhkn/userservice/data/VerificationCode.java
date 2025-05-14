@@ -1,4 +1,4 @@
-package com.namhkn.userservice.dto;
+package com.namhkn.userservice.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,8 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UpdatePasswordRequest {
-    private String username;
+public class VerificationCode {
     private String code;
-    private String newPassword;
+    private long timestamp;
 }
