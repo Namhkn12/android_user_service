@@ -44,18 +44,18 @@ public class FileController {
 
     @PostMapping
     public ResponseEntity<?> uploadUserImage(@PathVariable("id") int id, @RequestParam("image") MultipartFile file) {
+        UserInfo userInfo = userService.getUser(String.valueOf(id));
+
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("Please upload a file.");
         }
 
         try {
-            // Create the uploads directory if it doesn't exist
             Path uploadPath = Paths.get(uploadDir);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
 
-            // Save the file to the server
             String extension = getFileExtensionFromContentType(file.getContentType());
             if (extension == null) {
                 return ResponseEntity.badRequest().body("Must be an image png/jpg.");
@@ -63,6 +63,9 @@ public class FileController {
             String fileName = id + extension;
             Path filePath = uploadPath.resolve(fileName);
             Files.write(filePath, file.getBytes());
+
+            userInfo.setImgPath(fileName);
+            userService.saveUser(userInfo);
 
             return ResponseEntity.ok("File uploaded successfully: " + fileName);
         } catch (IOException e) {
@@ -77,7 +80,7 @@ public class FileController {
         return switch (contentType.toLowerCase()) {
             case "image/jpeg" -> ".jpg";
             case "image/png" -> ".png";
-            default -> null; // Return empty or a default extension if unknown
+            default -> null;
         };
     }
 }

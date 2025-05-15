@@ -36,6 +36,10 @@ public class UserService {
         return userRepository.findById(Integer.valueOf(id)).orElseThrow();
     }
 
+    public UserInfo saveUser(UserInfo userInfo) {
+        return userRepository.save(userInfo);
+    }
+
     public List<UserAddress> getAddressesOfUser(int userId) {
         return userRepository.findById(userId).orElseThrow().getAddressList();
     }
