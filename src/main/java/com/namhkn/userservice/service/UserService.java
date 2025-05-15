@@ -176,7 +176,7 @@ public class UserService {
         return code.equals(verificationCode.getCode());
     }
 
-    private boolean verifyEmailCode(String username, String code) {
+    public boolean verifyEmailCode(String username, String code) {
         VerificationCode verificationCode = emailVerificationCode.get(username);
         if (verificationCode == null) return false; //No code
         long currentTime = System.currentTimeMillis();

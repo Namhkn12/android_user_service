@@ -105,9 +105,16 @@ public class UserController {
         return ResponseEntity.status(HttpStatusCode.valueOf(401)).body(false);
     }
 
-    @PostMapping("/confirm-email")
+    @PostMapping("/request-confirm-email")
     public ResponseEntity<?> confirmEmail(@RequestBody ConfirmEmailRequest request) {
         boolean res = userService.requestConfirmEmail(request);
+        if (res) return ResponseEntity.ok(true);
+        return ResponseEntity.status(HttpStatusCode.valueOf(401)).body(false);
+    }
+
+    @PostMapping("/verify-email")
+    public ResponseEntity<?> verifyEmailCode(@RequestBody CodeRequest codeRequest) {
+        boolean res = userService.verifyEmailCode(codeRequest.getUsername(), codeRequest.getCode());
         if (res) return ResponseEntity.ok(true);
         return ResponseEntity.status(HttpStatusCode.valueOf(401)).body(false);
     }
