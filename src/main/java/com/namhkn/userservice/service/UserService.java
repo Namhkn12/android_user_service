@@ -137,14 +137,13 @@ public class UserService {
         Optional<UserCredential> optional = credentialRepository.findByUsername(request.getUsername());
         if (optional.isEmpty()) return false;
         UserCredential userCredential = optional.orElseThrow();
-        UserInfo userInfo = userCredential.getUserInfo();
         String username = userCredential.getUsername();
 
         String code = String.valueOf(random.nextInt(100000, 999999));
         emailVerificationCode.put(userCredential.getUsername(), new VerificationCode(code, System.currentTimeMillis()));
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(userInfo.getEmail());
+        message.setTo(request.getEmail());
         message.setSubject("Furniture eCommerce - Xác thực email cho tài khoản: " + username);
         message.setText("Mã của bạn là: " + code + "\nMã sẽ hết hạn sau 5 phút." + "\n\n* Nếu bạn không yêu cầu xác thực email, hãy bỏ qua mail này.");
         javaMailSender.send(message);
