@@ -26,7 +26,7 @@ public class UserController {
     public ResponseEntity<UserDTO> getUser(@PathVariable("id") String id) {
         try {
             UserInfo userInfo = userService.getUser(id);
-            UserDTO userDTO = new UserDTO(userInfo.getId(), userInfo.getDisplayName(), userInfo.getAddressList(), userInfo.getPhoneNumber(), userInfo.getGender(), userInfo.getDateOfBirth());
+            UserDTO userDTO = new UserDTO(userInfo.getId(), userInfo.getDisplayName(), userInfo.getAddressList(), userInfo.getPhoneNumber(), userInfo.getGender(), userInfo.getDateOfBirth(), userInfo.getEmail());
             return ResponseEntity.ok(userDTO);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(null);

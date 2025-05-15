@@ -15,10 +15,14 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.logging.Logger;
+
+import static com.namhkn.userservice.UserserviceApplication.logger;
 
 @Service
 @AllArgsConstructor
 public class UserService {
+
     private final UserRepository userRepository;
     private final UserAddressRepository addressRepository;
     private final UserCredentialRepository credentialRepository;
@@ -178,12 +182,16 @@ public class UserService {
 
     public boolean verifyEmailCode(String username, String code) {
         VerificationCode verificationCode = emailVerificationCode.get(username);
+        logger.info(username);
+        logger.info(code);
         if (verificationCode == null) return false; //No code
         long currentTime = System.currentTimeMillis();
         if (currentTime - verificationCode.getTimestamp() > EXPIRATION_TIME_MS) {
+            logger.info("Code expired");
             emailVerificationCode.remove(username);
             return false;
         }
+        logger.info("Checking equal");
         return code.equals(verificationCode.getCode());
     }
 
